@@ -8,6 +8,10 @@ body {
     font-family: "Cabin Condensed", sans-serif;
 }
 
+.hl-badges {
+    vertical-align: top;
+}
+
 .hl-name {
     font-weight: 700;
 }
