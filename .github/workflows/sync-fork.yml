@@ -56,13 +56,14 @@ jobs:
         run: |
           git merge upstream/main --no-edit || echo "Merge completed or no new commits"
 
-      - name: Copy custom.js from socialstream-custom
+      - name: Copy custom files from socialstream-custom
         run: |
           cp custom-files/kris.js fork/custom.js
+          cp custom-files/kris.css fork/custom.css
 
       - name: Commit and push changes
         working-directory: fork
         run: |
-          git add custom.js
-          git diff --cached --quiet || git commit -m "Update custom.js from socialstream-custom"
+          git add custom.js custom.css
+          git diff --cached --quiet || git commit -m "Update custom.js and custom.css from socialstream-custom"
           git push origin main || echo "Nothing new to push"
