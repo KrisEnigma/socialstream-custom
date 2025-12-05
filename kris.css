@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Cabin+Condensed:wght@400;500;600;700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+body {
+    filter: drop-shadow(0 0 1px #000) drop-shadow(0 0 1px #000) drop-shadow(0 0 2px #000) drop-shadow(0 0 3px #000);
+}
+
+.output {
+    font-family: "Cabin Condensed", sans-serif;
+}
+
+.hl-name {
+    font-weight: 900;
+}
+
+.hl-content {
+    font-weight: 400;
+}
+
+.icon.hl-source-type {
+    border-radius: 0%;
+}
