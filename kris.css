@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Cabin+Condensed:wght@400;700&display=swap');
 
 :root {
-    --comment-font-size: 25px;
-    --author-font-size: 25px;
+    --comment-font-size: 23px;
+    --author-font-size: 23px;
 }
 
 body {
