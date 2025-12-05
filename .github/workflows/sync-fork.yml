@@ -13,11 +13,18 @@ jobs:
       contents: write
 
     steps:
+      - name: Checkout socialstream-custom (for custom files)
+        uses: actions/checkout@v4
+        with:
+          path: custom-files
+          token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Checkout social_stream fork
         uses: actions/checkout@v4
         with:
           repository: KrisEnigma/social_stream
           fetch-depth: 0
+          path: fork
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Configure git
@@ -26,12 +33,15 @@ jobs:
           git config --global user.name "GitHub Action"
 
       - name: Add upstream remote
+        working-directory: fork
         run: git remote add upstream https://github.com/steveseguin/social_stream.git
 
       - name: Fetch upstream
+        working-directory: fork
         run: git fetch upstream main
 
       - name: Check if upstream is ahead
+        working-directory: fork
         id: check
         run: |
           BEHIND=$(git rev-list --count HEAD..upstream/main)
@@ -41,11 +51,25 @@ jobs:
           fi
 
       - name: Merge upstream if ahead
+        working-directory: fork
         if: steps.check.outputs.behind != '0'
         run: |
           git merge upstream/main --no-edit || echo "Merge completed or no new commits"
 
-      - name: Push changes
-        if: steps.check.outputs.behind != '0'
+      - name: Copy custom.js from socialstream-custom
         run: |
-          git push origin main || echo "Nothing to push"
+          cp custom-files/kris.js fork/custom.js
+
+      - name: Commit and push changes
+        working-directory: fork
+        run: |
+          git add custom.js
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Update custom.js from socialstream-custom"
+            git push origin main
+          fi
+          if [ "${{ steps.check.outputs.behind }}" != "0" ]; then
+            git push origin main || echo "Nothing new to push"
+          fi
