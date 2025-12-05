@@ -64,12 +64,5 @@ jobs:
         working-directory: fork
         run: |
           git add custom.js
-          if git diff --cached --quiet; then
-            echo "No changes to commit"
-          else
-            git commit -m "Update custom.js from socialstream-custom"
-            git push origin main
-          fi
-          if [ "${{ steps.check.outputs.behind }}" != "0" ]; then
-            git push origin main || echo "Nothing new to push"
-          fi
+          git diff --cached --quiet || git commit -m "Update custom.js from socialstream-custom"
+          git push origin main || echo "Nothing new to push"
