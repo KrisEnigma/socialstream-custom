@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Cabin+Condensed:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cabin+Condensed:wght@400;700&display=swap');
+
 
 body {
     filter: drop-shadow(0 0 1px #000) drop-shadow(0 0 1px #000) drop-shadow(0 0 2px #000) drop-shadow(0 0 3px #000);
@@ -9,7 +10,7 @@ body {
 }
 
 .hl-name {
-    font-weight: 900;
+    font-weight: 700;
 }
 
 .hl-content {
