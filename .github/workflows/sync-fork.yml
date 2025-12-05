@@ -43,8 +43,9 @@ jobs:
       - name: Merge upstream if ahead
         if: steps.check.outputs.behind != '0'
         run: |
-          git merge upstream/main --no-edit
+          git merge upstream/main --no-edit || echo "Merge completed or no new commits"
 
       - name: Push changes
         if: steps.check.outputs.behind != '0'
-        run: git push origin main
+        run: |
+          git push origin main || echo "Nothing to push"
