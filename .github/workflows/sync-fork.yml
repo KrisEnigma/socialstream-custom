@@ -1,0 +1,51 @@
+name: Sync social_stream fork with upstream
+
+on:
+  schedule:
+    # Run daily at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout social_stream fork
+        uses: actions/checkout@v4
+        with:
+          repository: KrisEnigma/social_stream
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
+
+      - name: Add upstream remote
+        run: git remote add upstream https://github.com/steveseguin/social_stream.git
+
+      - name: Fetch upstream
+        run: git fetch upstream main
+
+      - name: Check if upstream is ahead
+        id: check
+        run: |
+          BEHIND=$(git rev-list --count HEAD..upstream/main)
+          echo "behind=$BEHIND" >> $GITHUB_OUTPUT
+          if [ $BEHIND -gt 0 ]; then
+            echo "Upstream has $BEHIND new commits"
+          fi
+
+      - name: Merge upstream if ahead
+        if: steps.check.outputs.behind != '0'
+        run: |
+          git merge upstream/main --no-edit || echo "Merge completed or no new commits"
+
+      - name: Push changes
+        if: steps.check.outputs.behind != '0'
+        run: |
+          git push origin main || echo "Nothing new to push"
